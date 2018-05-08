@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './views/side_bar.dart';
+import './views/main_page.dart';
 
 void main() => runApp(
   new MaterialApp(
@@ -25,7 +26,7 @@ class RealWorldState extends State<RealWorldApp> {
             actions: <Widget>[
               new IconButton(icon: new Icon(Icons.refresh),
                 onPressed: () {
-                  print("Reloading...");
+                  print("Reloading..");
                 },
               )
             ],
@@ -33,9 +34,8 @@ class RealWorldState extends State<RealWorldApp> {
           drawer: new Drawer(
             child: new SideBar(),
           ),
-          body: new Center(
-            child: new CircularProgressIndicator()
-          ),
+          body: new MainPage()
+          ,
         );
     }
 }
