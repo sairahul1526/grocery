@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class SideBar extends StatelessWidget {
 
-  String address = "100 Feet Rd-Koramangala, Bangalore, 560095";
+  final address = "100 Feet Rd-Koramangala, Bangalore, 560095";
 
   @override
     Widget build(BuildContext context) {
