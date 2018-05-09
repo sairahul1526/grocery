@@ -22,9 +22,9 @@ class RealWorldState extends State<RealWorldApp> {
     Widget build(BuildContext context) {
         return new Scaffold(
           appBar: new AppBar(
-            title: new Text("GROCERY"),
+            title: new Text("GROCERY", style: new TextStyle(fontSize: 18.0),),
             actions: <Widget>[
-              new IconButton(icon: new Icon(Icons.refresh),
+              new IconButton(icon: new Icon(Icons.shopping_cart),
                 onPressed: () {
                   print("Reloading..");
                 },
