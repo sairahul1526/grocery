@@ -32,4 +32,4 @@ var items = {
   }
 };
 
-var testcat = Set.from([1,2]);
+var cart = Set();

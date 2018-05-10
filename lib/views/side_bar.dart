@@ -7,6 +7,7 @@ class SideBar extends StatelessWidget {
   @override
     Widget build(BuildContext context) {
       return new ListView(
+        padding: EdgeInsets.only(top: 40.0),
         children: <Widget>[
           new ListTile(
             title: new Text(address),
@@ -22,15 +23,15 @@ class SideBar extends StatelessWidget {
             trailing: new Icon(Icons.arrow_right)
           ),
           new ListTile(
-            title: new Text("My Addresses"),
+            title: new Text("Addresses"),
             trailing: new Icon(Icons.arrow_right)
           ),
           new ListTile(
-            title: new Text("My Orders"),
+            title: new Text("Orders"),
             trailing: new Icon(Icons.arrow_right)
           ),
           new ListTile(
-            title: new Text("My Cart"),
+            title: new Text("Cart"),
             trailing: new Icon(Icons.arrow_right)
           ),
           new ListTile(

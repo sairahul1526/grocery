@@ -89,8 +89,8 @@ class ItemState extends State<Item> {
   @override
     Widget build(BuildContext context) {
       var width = MediaQuery.of(context).size.width;
+      var sale = (((globals.items[id]["variants"] as Map)[1]["price"] - (globals.items[id]["variants"] as Map)[1]["sale"]) / (globals.items[id]["variants"] as Map)[1]["price"]) * 100;
       return new Container(
-        height: width * 0.83,
         width: width * 0.5,
         child: new Card(
           child: new Container(
@@ -106,7 +106,7 @@ class ItemState extends State<Item> {
                         border: new Border.all(color: Colors.lightGreen, width: width * 0.00625),
                         color: Colors.lightGreen[100]
                       ),
-                      child: new Text("10% OFF", style: new TextStyle(fontSize: width * 0.03),),
+                      child: new Text(sale.round().toString() + "% OFF", style: new TextStyle(fontSize: width * 0.03),),
                     ),
                     
                   ],
@@ -138,14 +138,18 @@ class ItemState extends State<Item> {
                 ),
                 new Container(
                   padding: new EdgeInsets.only(top: width * 0.022),
-                  child:                 ((globals.items[id]["variants"] as Map)[1]["amount"] == 0) ? 
+                  child: ((globals.items[id]["variants"] as Map)[1]["amount"] == 0) ? 
                   new Row(
                     children: <Widget>[
                       new Expanded(
                         child: new RaisedButton(
-                          onPressed: () => setState(() {
-                            (globals.items[id]["variants"] as Map)[1]["amount"] = 1;
-                          }),
+                          onPressed: () {
+                            setState(() {
+                              (globals.items[id]["variants"] as Map)[1]["amount"] = 1;
+                            });
+                            globals.cart.add(id);
+                            print(globals.cart);
+                          },
                           child: new Text("Add To Cart"),
                           color: Colors.blueAccent,
                           textColor: Colors.white,
@@ -176,9 +180,14 @@ class ItemState extends State<Item> {
                       new Container(
                         width: width * 0.16,
                         child: new RaisedButton(
-                          onPressed: () => setState(() {
-                            (globals.items[id]["variants"] as Map)[1]["amount"] -= 1;
-                          }),
+                          onPressed: () {
+                            setState(() {
+                              (globals.items[id]["variants"] as Map)[1]["amount"] -= 1;
+                            });
+                            if ((globals.items[id]["variants"] as Map)[1]["amount"] == 0) {
+                              globals.cart.remove(id);
+                            }
+                          },
                           child: new Text("-", style: new TextStyle(fontSize: width * 0.07),),
                           // icon: new Icon(Icons.add),
                           // label: new Text(""),

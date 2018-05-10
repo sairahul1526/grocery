@@ -45,7 +45,7 @@ class MainPage extends StatelessWidget {
     },
     {
       "image": "https://webcdn.grofers.com/cdn/pdp/category-l0-9.jpg",
-      "name": "Fruits & Vegetables"
+      "name": "Fruits & Vegetable"
     }
   ];
 
@@ -53,8 +53,19 @@ class MainPage extends StatelessWidget {
     Widget build(BuildContext context) {
       return new ListView(
         children: <Widget>[
-          new Carousal(banners, 190.0),
+          new Carousal(banners, MediaQuery.of(context).size.width * 0.51),
           new Catergories(categories),
+          new SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: new Row(
+              children: <Widget>[
+                new Item(1),
+                new Item(2),
+                new Item(1),
+                new Item(2)
+              ],
+            ),
+          )
         ],
       );
     }
