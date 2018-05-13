@@ -37,7 +37,7 @@ packages:
     source: hosted
     version: "1.0.3"
   carousel:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: carousel
       url: "https://pub.dartlang.org"
@@ -172,6 +172,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.0-alpha.9"
+  launch_review:
+    dependency: "direct main"
+    description:
+      name: launch_review
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   logging:
     dependency: transitive
     description:
@@ -263,6 +270,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.29.0+1"
+  share:
+    dependency: "direct main"
+    description:
+      name: share
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
   shelf:
     dependency: transitive
     description:
@@ -396,3 +410,4 @@ packages:
     version: "2.1.13"
 sdks:
   dart: ">=2.0.0-dev.28.0 <=2.0.0-edge.c080951d45e79cd25df98036c4be835b284a269c"
+  flutter: ">=0.1.4 <2.0.0"

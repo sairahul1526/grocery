@@ -44,7 +44,7 @@ class RealWorldState extends State<RealWorldApp> {
             ],
           ),
           drawer: new Drawer(
-            child: new SideBar(),
+            child: new SideBar(_scaffoldkey),
             width: MediaQuery.of(context).size.width * 0.5,
           ),
           body: new MainPage()

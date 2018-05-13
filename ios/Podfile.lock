@@ -1,0 +1,28 @@
+PODS:
+  - Flutter (1.0.0)
+  - launch_review (0.0.1):
+    - Flutter
+  - share (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Pods/.symlinks/flutter/ios`)
+  - launch_review (from `Pods/.symlinks/plugins/launch_review/ios`)
+  - share (from `Pods/.symlinks/plugins/share/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Pods/.symlinks/flutter/ios
+  launch_review:
+    :path: Pods/.symlinks/plugins/launch_review/ios
+  share:
+    :path: Pods/.symlinks/plugins/share/ios
+
+SPEC CHECKSUMS:
+  Flutter: 9d0fac939486c9aba2809b7982dfdbb47a7b0296
+  launch_review: 98c85a4cb86d1376b14958ebe69ddbcc753ff192
+  share: 8d04605548e55f7ce4ebb7b3e933f3c85028c9cf
+
+PODFILE CHECKSUM: 13dcf421f4da2e937a57e8ba760ed880beae536f
+
+COCOAPODS: 1.4.0
