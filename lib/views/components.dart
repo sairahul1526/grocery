@@ -297,107 +297,7 @@ class HorizontalList extends StatelessWidget {
     }
 }
 
-class AddAddress extends StatefulWidget {
-  @override
-    State<StatefulWidget> createState() {
-      return new AddAddressState();
-    }
-}
-
-class AddAddressState extends State<AddAddress> {
-  
-  var name = "";
-  var flat = "";
-  var street = "";
-  var area = "";
-
-  @override
-    Widget build(BuildContext context) {
-
-      return new AlertDialog(
-        title: new Center(child: new Text('Add New Address'),),
-        content: new SingleChildScrollView(
-          child: new ListBody(
-            children: <Widget>[
-              new TextField(
-                decoration: new InputDecoration(
-                  hintText: 'Name'
-                ),
-                onChanged: (String e) {
-                  setState(() {
-                    name = e;             
-                  });
-                },
-              ),
-              new TextField(
-                decoration: new InputDecoration(
-                  hintText: 'House/Flat'
-                ),
-                onChanged: (String e) {
-                  setState(() {
-                    flat = e;             
-                  });
-                },
-              ),
-              new TextField(
-                decoration: new InputDecoration(
-                  hintText: 'Street/Colony/Locality'
-                ),
-                onChanged: (String e) {
-                  print(e);
-                  setState(() {
-                    street = e;             
-                  });
-                },
-              ),
-              new TextField(
-                decoration: new InputDecoration(
-                  hintText: 'Area'
-                ),
-                onChanged: (String e) {
-                  setState(() {
-                    area = e;             
-                  });
-                },
-              ),
-              new Container(
-                margin: EdgeInsets.only(top: 20.0),
-                child: new Row(
-                  children: <Widget>[
-                    new Expanded(
-                      child: new RaisedButton(
-                        onPressed: () {
-                          print("added new addresss");
-                          print(name);
-                          print(flat + "\n" + street + "\n" + area);
-                          setState(() {
-                            globals.addresses.add(
-                              [
-                                name,
-                                flat + "\n" + street + "\n" + area
-                              ]
-                            );
-                            globals.name = name;
-                            globals.address = flat + "\n" + street + "\n" + area;                       
-                          });
-                          Navigator.of(context).pop();
-                        },
-                        child: new Text("Deliver to this address"),
-                        color: Colors.blueAccent,
-                        textColor: Colors.white,
-                      )
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-        )
-      );
-    }
-}
-
-class Address extends StatelessWidget {
+class Orders extends StatelessWidget {
   @override
     Widget build(BuildContext context) {
       
@@ -426,6 +326,293 @@ class Address extends StatelessWidget {
                               print(add[1] + "address selected");
                               globals.name = add[0];
                               globals.address = add[1];
+                            },
+                            child: new Text("Deliver to this address"),
+                            color: Colors.blueAccent,
+                            textColor: Colors.white,
+                          )
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
+        );
+      }
+
+      address.add(
+        new Container(
+          padding: EdgeInsets.only(top: 15.0),
+          child: new Row(
+            children: <Widget>[
+              new Expanded(
+                child: new RaisedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    print("add new address");
+                    dialog(context, "add address");
+                  },
+                  child: new Text("Add New Address"),
+                  color: Colors.blueAccent,
+                  textColor: Colors.white,
+                )
+              )
+            ],
+          ),
+        )
+      );
+
+
+      return new AlertDialog(
+        title: new Center(child: new Text('Orders'),),
+        content: new SingleChildScrollView(
+          child: new ListBody(
+            children: <Widget>[
+              new Card(
+                child: new Container(
+                  padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
+                  child: new Column(
+                    children: <Widget>[
+                      new Text("Delivered", style: new TextStyle(fontWeight: FontWeight.bold),),
+                      new Text("on 12 May 17,09:32 PM", style: new TextStyle(color: Colors.grey),),
+                      new Text("Order ID:GRDJII9891D", style: new TextStyle(color: Colors.grey),),
+                      new FlatButton(
+                        child: new Text("View 5 items ordered", style: new TextStyle(color: Colors.blueAccent),),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          // dialog(context, "address");
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              new Card(
+                child: new Container(
+                  padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
+                  child: new Column(
+                    children: <Widget>[
+                      new Text("Delivered", style: new TextStyle(fontWeight: FontWeight.bold),),
+                      new Text("on 12 May 17,09:32 PM", style: new TextStyle(color: Colors.grey),),
+                      new Text("Order ID:GRDJII9891D", style: new TextStyle(color: Colors.grey),),
+                      new FlatButton(
+                        child: new Text("View 5 items ordered", style: new TextStyle(color: Colors.blueAccent),),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          // dialog(context, "address");
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )
+      );
+    }
+}
+
+class AddAddress extends StatefulWidget {
+
+  final address;
+
+  AddAddress(this.address);
+
+  @override
+    State<StatefulWidget> createState() {
+      return new AddAddressState(address);
+    }
+}
+
+class AddAddressState extends State<AddAddress> {
+  
+  var name = "";
+  var flat = "";
+  var street = "";
+  var area = "";
+  var address;
+
+  AddAddressState(this.address);
+
+  final GlobalKey<FormFieldState> nameKey = new GlobalKey<FormFieldState>();
+  final GlobalKey<FormFieldState> flatKey = new GlobalKey<FormFieldState>();
+  final GlobalKey<FormFieldState> streetKey = new GlobalKey<FormFieldState>();
+  final GlobalKey<FormFieldState> areaKey = new GlobalKey<FormFieldState>();
+
+  @override
+    Widget build(BuildContext context) {
+
+      if (address != null) {
+        setState(() {
+          name = address[0];
+          flat = address[1];
+          street = address[2];
+          area = address[3]; 
+        });
+      }
+
+      return new AlertDialog(
+        title: new Center(child: new Text(address == null ? 'Add New Address' : 'Edit Address'),),
+        content: new SingleChildScrollView(
+          child: new ListBody(
+            children: <Widget>[
+              new TextFormField(
+                key: nameKey,
+                initialValue: name,
+                decoration: new InputDecoration(
+                  labelText: 'Name'
+                ),
+              ),
+              new TextFormField(
+                key: flatKey,
+                initialValue: flat,
+                decoration: new InputDecoration(
+                  labelText: 'House/Flat'
+                ),
+              ),
+              new TextFormField(
+                key: streetKey,
+                initialValue: street,
+                decoration: new InputDecoration(
+                  labelText: 'Street/Colony/Locality '
+                ),
+              ),
+              new TextFormField(
+                key: areaKey,
+                initialValue: area,
+                decoration: new InputDecoration(
+                  labelText: 'Area'
+                ),
+              ),
+              new Container(
+                margin: EdgeInsets.only(top: 30.0),
+                child: new Row(
+                  children: <Widget>[
+                    new Expanded(
+                      child: new RaisedButton(
+                        onPressed: () {
+                          print("added new addresss");
+                          print(nameKey.currentState.value);
+                          print(flatKey.currentState.value + "\n" + streetKey.currentState.value + "\n" + areaKey.currentState.value);
+                          setState(() {
+
+                            if (address == null) {
+                              globals.addresses.add(
+                                [
+                                  nameKey.currentState.value,
+                                  flatKey.currentState.value,
+                                  streetKey.currentState.value,
+                                  areaKey.currentState.value
+                                ]
+                              );
+                            } else {
+                              var index = globals.addresses.indexOf(address);
+                              globals.addresses.remove(address);
+                              globals.addresses.insert(index, [
+                                nameKey.currentState.value,
+                                flatKey.currentState.value,
+                                streetKey.currentState.value,
+                                areaKey.currentState.value
+                              ]);
+                            }
+                            
+                            globals.name = nameKey.currentState.value;
+                            globals.address = flatKey.currentState.value + "\n" + streetKey.currentState.value + "\n" + areaKey.currentState.value;                       
+                          });
+                          Navigator.of(context).pop();
+                        },
+                        child: new Text("Deliver to this address"),
+                        color: Colors.blueAccent,
+                        textColor: Colors.white,
+                      )
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        )
+      );
+    }
+}
+
+enum WhyFarther { edit, delete }
+var editAddress;
+
+class Address extends StatefulWidget {
+  @override
+    State<StatefulWidget> createState() {
+      return new AddressState();
+    }
+}
+
+class AddressState extends State<Address> {
+  @override
+    Widget build(BuildContext context) {
+      
+      var address = <Widget>[];
+
+      for (var add in globals.addresses) {
+        address.add(
+          new Card(
+            child: new Container(
+              padding: EdgeInsets.all(5.0),
+              child: new Column(
+                children: <Widget>[
+                  new Row(
+                    children: <Widget>[
+                      new Expanded(
+                        child: new Container(
+                          padding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+                          child: new Text(add[0], style: new TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.start,),
+                        ),
+                      ),
+                      new PopupMenuButton<WhyFarther>(
+                        onSelected: (WhyFarther result) {
+                          if (result == WhyFarther.delete) {
+                            setState(() {
+                              globals.addresses.remove(add);                           
+                            });
+                            print("address deleted ");
+                          } else {
+                            editAddress = add;
+                            print(editAddress);
+                            Navigator.of(context).pop();
+                            print("edit address");
+                            dialog(context, "edit address");
+                          }
+                        },
+                        itemBuilder: (BuildContext context) => <PopupMenuEntry<WhyFarther>>[
+                          const PopupMenuItem<WhyFarther>(
+                            value: WhyFarther.edit,
+                            child: const Text('Edit'),
+                          ),
+                          const PopupMenuItem<WhyFarther>(
+                            value: WhyFarther.delete,
+                            child: const Text('Delete'),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                  new Container(
+                    padding: EdgeInsets.all(5.0),
+                    child: new Text(add[1] + "\n" + add[2] + "\n" + add[3]),
+                  ),
+                  new Container(
+                    padding: EdgeInsets.only(top: 15.0),
+                    child: new Row(
+                      children: <Widget>[
+                        new Expanded(
+                          child: new RaisedButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              print(add[1] + add[2] + add[3] + "address selected");
+                              globals.name = add[0];
+                              globals.address = add[1] + "\n" + add[2] + "\n" + add[3];
                             },
                             child: new Text("Deliver to this address"),
                             color: Colors.blueAccent,
@@ -506,14 +693,19 @@ class Offers extends StatelessWidget {
     }
 }
 
-class FAQ extends StatelessWidget {
+class FAQAboutUs extends StatelessWidget {
+
+  final faq;
+
+  FAQAboutUs(this.faq);
+
   @override
     Widget build(BuildContext context) {
       var width = MediaQuery.of(context).size.width;
 
       var texts = <Widget>[];
 
-      for (var h in globals.faqs) {
+      for (var h in (faq ? globals.faqs : globals.about)) {
         texts.add(new Container(
           padding: EdgeInsets.only(top: width * 0.07),
           child: new Text(h[0], style: new TextStyle(fontSize: width * 0.06, fontWeight: FontWeight.bold),),)
@@ -529,7 +721,7 @@ class FAQ extends StatelessWidget {
 
 
       return new AlertDialog(
-        title: new Center(child: new Text('FAQs'),),
+        title: new Center(child: new Text(faq ? 'FAQs' : 'About Us'),),
         content: new Column(
           children: <Widget>[
             new Expanded(
@@ -564,7 +756,13 @@ class Payment extends StatelessWidget {
                     new Divider(),
                     new Container(
                       padding: EdgeInsets.only(bottom: 30.0),
-                      child: new Text(globals.name + "\n" + globals.address),
+                      child: new FlatButton(
+                        child: new Text(globals.name + "\n" + globals.address),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          dialog(context, "address");
+                        },
+                      ),
                     ),
                     new Text("Delivery Date & Time", style: new TextStyle(color: Colors.grey),),
                     new Divider(),
@@ -614,13 +812,19 @@ Future<Null> dialog(BuildContext context, String select)  async {
       if (select == "payment") {
         return new Payment();
       } else if (select == "faq"){
-        return new FAQ();
+        return new FAQAboutUs(true);
+      } else if (select == "about"){
+        return new FAQAboutUs(false);
+      } else if (select == "orders"){
+        return new Orders();
       } else if (select == "offers"){
         return new Offers();
       } else if (select == "address"){
         return new Address();
       } else if (select == "add address"){
-        return new AddAddress();
+        return new AddAddress(null);
+      } else if (select == "edit address"){
+        return new AddAddress(editAddress);
       } else {
         return new Payment();
       }

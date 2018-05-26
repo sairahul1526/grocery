@@ -34,7 +34,11 @@ class SideBar extends StatelessWidget {
           ),
           new ListTile(
             title: new Text("Orders"),
-            trailing: new Icon(Icons.arrow_right)
+            trailing: new Icon(Icons.arrow_right),
+            onTap: () {
+              Navigator.of(context).pop();
+              dialog(context, "orders");
+            },
           ),
           new ListTile(
             title: new Text("Cart"),
@@ -83,7 +87,11 @@ class SideBar extends StatelessWidget {
           ),
           new ListTile(
             title: new Text("About Us"),
-            trailing: new Icon(Icons.arrow_right)
+            trailing: new Icon(Icons.arrow_right),
+            onTap: () {
+              Navigator.of(context).pop();
+              dialog(context, "about");
+            },
           ),
         ],
       );
