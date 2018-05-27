@@ -16,6 +16,27 @@ var addresses = [
   ],
 ];
 
+var categoriesList = [
+  [
+    "Fruits & Vegetables",
+    [
+      "All Fruits & Vegetables",
+      "Fresh Vegetables",
+      "Herbs & Seasoning",
+      "Fresh Fruits",
+      "Exotic Fruits & Veggies"
+    ]
+  ],
+  [
+    "Foodgrains, Oil & Masala",
+    [
+      "All Foodgrains, Oil & Masala",
+      "Atta, Flours & Sooji",
+      "Salt, Sugar & Jaggery"
+    ]
+  ]
+];
+
 var about = [
   [
     "",

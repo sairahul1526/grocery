@@ -300,114 +300,45 @@ class HorizontalList extends StatelessWidget {
 class Orders extends StatelessWidget {
   @override
     Widget build(BuildContext context) {
-      
-      var address = <Widget>[];
-
-      for (var add in globals.addresses) {
-        address.add(
-          new Card(
-            child: new Container(
-              padding: EdgeInsets.all(5.0),
-              child: new Column(
-                children: <Widget>[
-                  new Container(
-                    padding: EdgeInsets.all(5.0),
-                    child: new Text(add[0], style: new TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.start,),
-                  ),
-                  new Text(add[1]),
-                  new Container(
-                    padding: EdgeInsets.only(top: 15.0),
-                    child: new Row(
-                      children: <Widget>[
-                        new Expanded(
-                          child: new RaisedButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              print(add[1] + "address selected");
-                              globals.name = add[0];
-                              globals.address = add[1];
-                            },
-                            child: new Text("Deliver to this address"),
-                            color: Colors.blueAccent,
-                            textColor: Colors.white,
-                          )
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          )
-        );
-      }
-
-      address.add(
-        new Container(
-          padding: EdgeInsets.only(top: 15.0),
-          child: new Row(
-            children: <Widget>[
-              new Expanded(
-                child: new RaisedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    print("add new address");
-                    dialog(context, "add address");
-                  },
-                  child: new Text("Add New Address"),
-                  color: Colors.blueAccent,
-                  textColor: Colors.white,
-                )
-              )
-            ],
-          ),
-        )
-      );
-
 
       return new AlertDialog(
         title: new Center(child: new Text('Orders'),),
         content: new SingleChildScrollView(
           child: new ListBody(
             children: <Widget>[
-              new Card(
-                child: new Container(
-                  padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
-                  child: new Column(
-                    children: <Widget>[
-                      new Text("Delivered", style: new TextStyle(fontWeight: FontWeight.bold),),
-                      new Text("on 12 May 17,09:32 PM", style: new TextStyle(color: Colors.grey),),
-                      new Text("Order ID:GRDJII9891D", style: new TextStyle(color: Colors.grey),),
-                      new FlatButton(
-                        child: new Text("View 5 items ordered", style: new TextStyle(color: Colors.blueAccent),),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          // dialog(context, "address");
-                        },
-                      )
-                    ],
-                  ),
+              new Container(
+                child: new Column(
+                  children: <Widget>[
+                    new Text("Shipping", style: new TextStyle(fontWeight: FontWeight.bold),),
+                    new Text("on 12 May 17,09:32 PM", style: new TextStyle(color: Colors.grey),),
+                    new Text("Order ID:GRDJII9891D", style: new TextStyle(color: Colors.grey),),
+                    new ExpansionTile(
+                      title: new Text("View 5 items ordered"),
+                      children: (globals.categoriesList[1][1] as List).map((val) => new ListTile(
+                          title: new Text(val),
+                        ))
+                      .toList(),
+                    )
+                  ],
                 ),
               ),
-              new Card(
-                child: new Container(
-                  padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
-                  child: new Column(
-                    children: <Widget>[
-                      new Text("Delivered", style: new TextStyle(fontWeight: FontWeight.bold),),
-                      new Text("on 12 May 17,09:32 PM", style: new TextStyle(color: Colors.grey),),
-                      new Text("Order ID:GRDJII9891D", style: new TextStyle(color: Colors.grey),),
-                      new FlatButton(
-                        child: new Text("View 5 items ordered", style: new TextStyle(color: Colors.blueAccent),),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          // dialog(context, "address");
-                        },
-                      )
-                    ],
-                  ),
+              new Divider(),
+              new Container(
+                child: new Column(
+                  children: <Widget>[
+                    new Text("Delivered", style: new TextStyle(fontWeight: FontWeight.bold),),
+                    new Text("on 12 May 17,09:32 PM", style: new TextStyle(color: Colors.grey),),
+                    new Text("Order ID:GRDJII9891D", style: new TextStyle(color: Colors.grey),),
+                    new ExpansionTile(
+                      title: new Text("View 5 items ordered"),
+                      children: (globals.categoriesList[1][1] as List).map((val) => new ListTile(
+                          title: new Text(val),
+                        ))
+                      .toList(),
+                    )
+                  ],
                 ),
-              ),
+              )
             ],
           ),
         )
@@ -557,73 +488,73 @@ class AddressState extends State<Address> {
 
       for (var add in globals.addresses) {
         address.add(
-          new Card(
-            child: new Container(
-              padding: EdgeInsets.all(5.0),
-              child: new Column(
-                children: <Widget>[
-                  new Row(
+          new Divider()
+        );
+        address.add(
+          new Container(
+            child: new Column(
+              children: <Widget>[
+                new Row(
+                  children: <Widget>[
+                    new Expanded(
+                      child: new Container(
+                        padding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+                        child: new Text(add[0], style: new TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.start,),
+                      ),
+                    ),
+                    new PopupMenuButton<WhyFarther>(
+                      onSelected: (WhyFarther result) {
+                        if (result == WhyFarther.delete) {
+                          setState(() {
+                            globals.addresses.remove(add);                           
+                          });
+                          print("address deleted ");
+                        } else {
+                          editAddress = add;
+                          print(editAddress);
+                          Navigator.of(context).pop();
+                          print("edit address");
+                          dialog(context, "edit address");
+                        }
+                      },
+                      itemBuilder: (BuildContext context) => <PopupMenuEntry<WhyFarther>>[
+                        const PopupMenuItem<WhyFarther>(
+                          value: WhyFarther.edit,
+                          child: const Text('Edit'),
+                        ),
+                        const PopupMenuItem<WhyFarther>(
+                          value: WhyFarther.delete,
+                          child: const Text('Delete'),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                new Container(
+                  padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
+                  child: new Text(add[1] + "\n" + add[2] + "\n" + add[3]),
+                ),
+                new Container(
+                  padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 15.0),
+                  child: new Row(
                     children: <Widget>[
                       new Expanded(
-                        child: new Container(
-                          padding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
-                          child: new Text(add[0], style: new TextStyle(fontWeight: FontWeight.bold), textAlign: TextAlign.start,),
-                        ),
-                      ),
-                      new PopupMenuButton<WhyFarther>(
-                        onSelected: (WhyFarther result) {
-                          if (result == WhyFarther.delete) {
-                            setState(() {
-                              globals.addresses.remove(add);                           
-                            });
-                            print("address deleted ");
-                          } else {
-                            editAddress = add;
-                            print(editAddress);
+                        child: new RaisedButton(
+                          onPressed: () {
                             Navigator.of(context).pop();
-                            print("edit address");
-                            dialog(context, "edit address");
-                          }
-                        },
-                        itemBuilder: (BuildContext context) => <PopupMenuEntry<WhyFarther>>[
-                          const PopupMenuItem<WhyFarther>(
-                            value: WhyFarther.edit,
-                            child: const Text('Edit'),
-                          ),
-                          const PopupMenuItem<WhyFarther>(
-                            value: WhyFarther.delete,
-                            child: const Text('Delete'),
-                          ),
-                        ],
+                            print(add[1] + add[2] + add[3] + "address selected");
+                            globals.name = add[0];
+                            globals.address = add[1] + "\n" + add[2] + "\n" + add[3];
+                          },
+                          child: new Text("Deliver to this address"),
+                          color: Colors.blueAccent,
+                          textColor: Colors.white,
+                        )
                       )
                     ],
                   ),
-                  new Container(
-                    padding: EdgeInsets.all(5.0),
-                    child: new Text(add[1] + "\n" + add[2] + "\n" + add[3]),
-                  ),
-                  new Container(
-                    padding: EdgeInsets.only(top: 15.0),
-                    child: new Row(
-                      children: <Widget>[
-                        new Expanded(
-                          child: new RaisedButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              print(add[1] + add[2] + add[3] + "address selected");
-                              globals.name = add[0];
-                              globals.address = add[1] + "\n" + add[2] + "\n" + add[3];
-                            },
-                            child: new Text("Deliver to this address"),
-                            color: Colors.blueAccent,
-                            textColor: Colors.white,
-                          )
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
           )
         );
