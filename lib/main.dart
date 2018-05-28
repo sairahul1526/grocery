@@ -5,8 +5,7 @@ import './views/cart.dart';
 import './views/main_page.dart';
 
 import './views/globals.dart' as globals;
-
-import 'package:material_search/material_search.dart';
+import './views/search_view.dart';
 
 void main() => runApp(
   new MaterialApp(
@@ -24,55 +23,6 @@ class RealWorldApp extends StatefulWidget {
 
 class RealWorldState extends State<RealWorldApp> {
 
-  final _names =  [
-    "New Potato - Onion - Tomato (Hybrid)",
-    "Safeda Mango",
-    "Cucumber",
-    "Large Round Brinjal (Bharta)",
-    "Kiwi - Imported",
-    "Green Chilli",
-    "Fresh Beans",
-    "Bitter Gaurd (Karela)"
-  ];
-
-  String _name = 'No one';
-
-  _buildMaterialSearchPage(BuildContext context) {
-    return new MaterialPageRoute<String>(
-      settings: new RouteSettings(
-        name: 'material_search',
-        isInitialRoute: false,
-      ),
-      builder: (BuildContext context) {
-        return new Material(
-          child: new MaterialSearch<String>(
-            placeholder: 'Search for products',
-            results: _names.map((String v) => new MaterialSearchResult<String>(
-              // icon: Icons.person,
-              value: v,
-              text: v,
-            )).toList(),
-            filter: (dynamic value, String criteria) {
-              return value.toLowerCase().trim()
-                .contains(new RegExp(r'' + criteria.toLowerCase().trim() + ''));
-            },
-            onSelect: (dynamic value) => Navigator.of(context).pop(value),
-            onSubmit: (String value) => Navigator.of(context).pop(value),
-          ),
-        );
-      }
-    );
-  }
-
-  _showMaterialSearch(BuildContext context) {
-    Navigator.of(context)
-      .push(_buildMaterialSearchPage(context))
-      .then((dynamic value) {
-        print(value);
-        setState(() => _name = value as String);
-      });
-  }
-
   var _scaffoldkey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -84,29 +34,54 @@ class RealWorldState extends State<RealWorldApp> {
             width: MediaQuery.of(context).size.width * 0.55,
           ),
           appBar: new AppBar(
-            title: new Text("GROCERY", style: new TextStyle(fontSize: 18.0),),
+            title: new Center(
+              child: new Text("GROCERY", style: new TextStyle(fontSize: 18.0),),
+            ),
             actions: <Widget>[
               new IconButton(
                 onPressed: () {
-                  _showMaterialSearch(context);
+                  SearchView().showMaterialSearch(context);
                 },
                 tooltip: 'Search',
                 icon: new Icon(Icons.search),
               ),
-              new IconButton(icon: new Icon(Icons.shopping_cart),
-                onPressed: () {
-                  print(globals.cart);
-                  _scaffoldkey.currentState.openEndDrawer();
-                },
-              )
+              new Padding(
+                padding: EdgeInsets.only(top: 5.0),
+                child: new Stack(
+                  children: <Widget>[
+                    new IconButton(icon: new Icon(Icons.shopping_cart),
+                      onPressed: () {
+                        print(globals.cart);
+                        _scaffoldkey.currentState.openEndDrawer();
+                      },
+                    ),
+                    new Positioned(
+                      top: 0.0,
+                      right: 0.0,
+                      child: new Icon(Icons.brightness_1, size: 22.0, 
+                        color: Colors.redAccent),
+                    ),
+                    new Positioned(
+                      top: 2.0,
+                      right: 6.0,
+                      child: new Text("1",
+                        style: new TextStyle(
+                          color: Colors.white,
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w500
+                        )
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
           drawer: new Drawer(
             child: new SideBar(_scaffoldkey),
             width: MediaQuery.of(context).size.width * 0.5,
           ),
-          body: new MainPage()
-          ,
+          body: new MainPage(),
         );
     }
 }

@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:carousel/carousel.dart';
 
 import './globals.dart' as globals;
+import './category_items.dart';
 
 class Carousal extends StatelessWidget {
 
@@ -52,7 +53,19 @@ class Catergories extends StatelessWidget {
             final category = catergories[i];
             final padding = (i == 0) ? 10.0 : 0.0;
             return new GestureDetector(
-              onTap: () => print(MediaQuery.of(context).size),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  new MaterialPageRoute(builder: (context) => 
+                    new CategoryItemsView(
+                      [globals.fruitsVegetables, globals.fruitsVegetables, globals.fruitsVegetables, globals.fruitsVegetables, globals.fruitsVegetables, globals.fruitsVegetables, globals.fruitsVegetables, globals.fruitsVegetables],
+                      ["Fresh Fruits", "Vegetables", "Fresh Meat", "Exotic Fruits", "Fresh Fruits", "Vegetables", "Fresh Meat", "Exotic Fruits"],
+                      6,
+                      "Fruits & Vegetables"
+                    )
+                  ),
+                );
+              },
               child: new Container(
                 margin: new EdgeInsets.only(left: padding),
                 width: width * 0.22,
@@ -756,6 +769,8 @@ Future<Null> dialog(BuildContext context, String select)  async {
         return new AddAddress(null);
       } else if (select == "edit address"){
         return new AddAddress(editAddress);
+      } else if (select == "search select"){
+        return new Item(2);
       } else {
         return new Payment();
       }
