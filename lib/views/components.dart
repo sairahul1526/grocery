@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:intl/intl.dart';
 import 'package:carousel/carousel.dart';
 
 import './globals.dart' as globals;
@@ -168,7 +169,7 @@ class ItemState extends State<Item> {
                               (globals.items[id]["variants"] as Map)[1]["amount"] = 1;
                             });
                             globals.cart.add(id);
-                            print(globals.cart);
+                            globals.server.simulateMessage(globals.cart.length.toString());
                           },
                           child: new Text("Add To Cart"),
                           color: Colors.blueAccent,
@@ -187,8 +188,6 @@ class ItemState extends State<Item> {
                             (globals.items[id]["variants"] as Map)[1]["amount"] += 1;
                           }),
                           child: new Text("+", style: new TextStyle(fontSize: width * 0.07),),
-                          // icon: new Icon(Icons.add),
-                          // label: new Text(""),
                           color: Colors.blueAccent,
                           textColor: Colors.white,
                         ),
@@ -206,11 +205,10 @@ class ItemState extends State<Item> {
                             });
                             if ((globals.items[id]["variants"] as Map)[1]["amount"] == 0) {
                               globals.cart.remove(id);
+                              globals.server.simulateMessage(globals.cart.length.toString());
                             }
                           },
                           child: new Text("-", style: new TextStyle(fontSize: width * 0.07),),
-                          // icon: new Icon(Icons.add),
-                          // label: new Text(""),
                           color: Colors.blueAccent,
                           textColor: Colors.white,
                         ),
@@ -314,45 +312,42 @@ class Orders extends StatelessWidget {
   @override
     Widget build(BuildContext context) {
 
+      var items = <Widget>[];
+
+      for (var order in globals.orders) {
+        items.add(new Divider());
+        items.add(
+          new Container(
+            child: new Column(
+              children: <Widget>[
+                new Text(order[0], style: new TextStyle(fontWeight: FontWeight.bold),),
+                new Text("on " + order[1], style: new TextStyle(color: Colors.grey),),
+                new Text("Order ID:" + order[2], style: new TextStyle(color: Colors.grey),),
+                new ExpansionTile(
+                  title: new Text("View " + ((order[3] as List).length).toString() + " items ordered"),
+                  children: (order[3] as List).map((val) => new ListTile(
+                      title: new Row(
+                        children: <Widget>[
+                          new Expanded(
+                            child: new Text(globals.items[val[0]]["name"].toString()),
+                          ),
+                          new Text(" x " + val[1].toString())
+                        ],
+                      )
+                    ))
+                  .toList(),
+                )
+              ],
+            ),
+          )
+        );
+      }
+
       return new AlertDialog(
         title: new Center(child: new Text('Orders'),),
         content: new SingleChildScrollView(
           child: new ListBody(
-            children: <Widget>[
-              new Container(
-                child: new Column(
-                  children: <Widget>[
-                    new Text("Shipping", style: new TextStyle(fontWeight: FontWeight.bold),),
-                    new Text("on 12 May 17,09:32 PM", style: new TextStyle(color: Colors.grey),),
-                    new Text("Order ID:GRDJII9891D", style: new TextStyle(color: Colors.grey),),
-                    new ExpansionTile(
-                      title: new Text("View 5 items ordered"),
-                      children: (globals.categoriesList[1][1] as List).map((val) => new ListTile(
-                          title: new Text(val),
-                        ))
-                      .toList(),
-                    )
-                  ],
-                ),
-              ),
-              new Divider(),
-              new Container(
-                child: new Column(
-                  children: <Widget>[
-                    new Text("Delivered", style: new TextStyle(fontWeight: FontWeight.bold),),
-                    new Text("on 12 May 17,09:32 PM", style: new TextStyle(color: Colors.grey),),
-                    new Text("Order ID:GRDJII9891D", style: new TextStyle(color: Colors.grey),),
-                    new ExpansionTile(
-                      title: new Text("View 5 items ordered"),
-                      children: (globals.categoriesList[1][1] as List).map((val) => new ListTile(
-                          title: new Text(val),
-                        ))
-                      .toList(),
-                    )
-                  ],
-                ),
-              )
-            ],
+            children: items,
           ),
         )
       );
@@ -712,15 +707,36 @@ class Payment extends StatelessWidget {
                     new Divider(),
                     new Container(
                       padding: EdgeInsets.only(bottom: 30.0),
-                      child: new Text("Tue, 15 May, 6AM - 9AM", style: new TextStyle(fontWeight: FontWeight.bold),),
+                      child: new GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          dialog(context, "delivery time");
+                        },
+                        child: new Text("Tue, 15 May, 6AM - 9AM", style: new TextStyle(fontWeight: FontWeight.bold),),
+                      ),
                     ),
                     new Text("Payment Options", style: new TextStyle(color: Colors.grey),),
                     new Divider(),
-                    new Text("Amount Payable (Incl. of all taxes)", style: new TextStyle(fontWeight: FontWeight.bold),),
-                    new Container(
-                      padding: EdgeInsets.only(bottom: 30.0),
-                      child: new Text("₹2374"),
+                    new Row(
+                      children: <Widget>[
+                        new Expanded(
+                          child: new Text("Your total savings", style: new TextStyle(fontWeight: FontWeight.bold),),
+                        ),
+                        new Text("₹" + (globals.price - globals.sale).toString())
+                      ],
                     ),
+                    new Padding(
+                      padding: EdgeInsets.all(5.0),
+                    ),
+                    new Row(
+                      children: <Widget>[
+                        new Expanded(
+                          child: new Text("Amount Payable", style: new TextStyle(fontWeight: FontWeight.bold),),
+                        ),
+                        new Text("₹" + globals.sale.toString())
+                      ],
+                    ),
+                    new Text("(Incl. of all taxes)", style: new TextStyle(fontSize: 13.0, fontWeight: FontWeight.normal),),
                   ],
                 ),
               ),
@@ -748,6 +764,116 @@ class Payment extends StatelessWidget {
     }
 }
 
+class SelectDeliveryTimePayment extends StatefulWidget {
+  @override
+    State<StatefulWidget> createState() {
+      return new SelectDeliveryTimePaymentState();
+    }
+}
+
+class SelectDeliveryTimePaymentState extends State<SelectDeliveryTimePayment> {
+
+  String valueDate;
+  var valuesDate = [];
+
+  String valueTime;
+  var valuesTime = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    
+    var format = new DateFormat("MMMEd");
+    var today = new DateTime.now();
+
+    valuesDate.addAll(["Tomorrow", format.format(today.add(new Duration(days: 2))), format.format(today.add(new Duration(days: 3))), format.format(today.add(new Duration(days: 4))), format.format(today.add(new Duration(days: 5)))]);
+    valueDate = valuesDate[0];
+
+    valuesTime.addAll(["10 AM - 1PM", "5 PM - 8 PM", "8 PM - 11 PM"]);
+    valueTime = valuesTime[0];
+  }
+
+  @override
+    Widget build(BuildContext context) {
+
+      var payment = new AlertDialog(
+        title: new Center(child: new Text('Schedule Delivery Date & Time '),),
+        content: new SingleChildScrollView(
+          child: new ListBody(
+            children: <Widget>[
+              new Row(
+                children: <Widget>[
+                  new Expanded(
+                    child: new DropdownButton(
+                      iconSize: 0.0,
+                      value: valueDate,
+                      items: valuesDate.map((v) {
+                        return new DropdownMenuItem(
+                          value: v,
+                          child: new Text(v),
+                        );
+                      }).toList(),
+                      onChanged: (v) {
+                        print(v);
+                        setState(() {
+                          valueDate = v;               
+                        });
+                      },
+                    ),
+                  )
+                ],
+              ),
+              new Row(
+                children: <Widget>[
+                  new Expanded(
+                    child: new DropdownButton(
+                      iconSize: 0.0,
+                      value: valueTime,
+                      items: valuesTime.map((v) {
+                        return new DropdownMenuItem(
+                          value: v,
+                          child: new Text(v),
+                        );
+                      }).toList(),
+                      onChanged: (v) {
+                        print(v);
+                        setState(() {
+                          valueTime = v;               
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              new Container(
+                padding: EdgeInsets.only(top: 15.0),
+                child: new Row(
+                  children: <Widget>[
+                    new Expanded(
+                      child: new RaisedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          dialog(context, "payment");
+                        },
+                        child: new Text("Done "),
+                        color: Colors.blueAccent,
+                        textColor: Colors.white,
+                      )
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        )
+      
+      );
+
+      return payment;
+    }
+}
+
 Future<Null> dialog(BuildContext context, String select)  async {
 
   return showDialog<Null>(
@@ -755,6 +881,8 @@ Future<Null> dialog(BuildContext context, String select)  async {
     builder: (BuildContext context) {
       if (select == "payment") {
         return new Payment();
+      } else if (select == "delivery time"){
+        return new SelectDeliveryTimePayment();
       } else if (select == "faq"){
         return new FAQAboutUs(true);
       } else if (select == "about"){

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 var name = "Sai Rahul";
 var address = "Flat No. 222\nHeritage Apartments, Plot No. 10,\nDwaraka, New Delhi 110075\nIndia";
 
@@ -471,6 +473,34 @@ var items = {
   }
 };
 
+var orders = [
+  [
+    "Shipping",
+    "10 April 17,10:00 AM",
+    "GRDJII9891D",
+    [[8, 1], [3, 1], [4, 3], [5, 7], [7, 10], [2, 1]]
+  ],
+  [
+    "Delivered",
+    "12 May 17,09:32 PM",
+    "GRDJII9891D",
+    [[2, 5], [1, 3], [6, 1]]
+  ]
+];
+
 var cart = Set();
 
+var price = 0;
+var sale = 0;
+
 var fruitsVegetables = Set.from([1,2,3,4,5,6,7,8]);
+
+class Server {
+  StreamController<String> _controller = new StreamController.broadcast();
+  void simulateMessage(String message) {
+    _controller.add(message);
+  }
+  Stream get messages => _controller.stream;
+}
+
+final server = new Server();

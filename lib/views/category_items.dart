@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 
 import './cart.dart';
 import './globals.dart' as globals;
@@ -28,6 +27,8 @@ class CategoryItemsViewState extends State<CategoryItemsView> with SingleTickerP
   final selectSub;
   final selectCat;
 
+  String numOfItems = "0";
+
   CategoryItemsViewState(this.itemsId, this.subNames, this.selectSub, this.selectCat);
 
   var _scaffoldkey = new GlobalKey<ScaffoldState>();
@@ -38,8 +39,14 @@ class CategoryItemsViewState extends State<CategoryItemsView> with SingleTickerP
     void initState() {
       // TODO: implement initState
       super.initState();
+      globals.server.messages.listen((no) {
+        setState(() {
+          numOfItems = no;
+        });
+      });
       controller = new TabController(vsync: this, length: subNames.length, initialIndex: selectSub);
     }
+    
 
   @override
     void dispose() {
@@ -100,23 +107,25 @@ class CategoryItemsViewState extends State<CategoryItemsView> with SingleTickerP
                       _scaffoldkey.currentState.openEndDrawer();
                     },
                   ),
+                  (numOfItems != "0") ?
                   new Positioned(
                     top: 0.0,
                     right: 0.0,
                     child: new Icon(Icons.brightness_1, size: 22.0, 
                       color: Colors.redAccent),
-                  ),
+                  ) : new Text(""),
+                  (numOfItems != "0") ?
                   new Positioned(
                     top: 2.0,
-                    right: 6.0,
-                    child: new Text("4",
+                    right: 7.5,
+                    child: new Text(numOfItems,
                       style: new TextStyle(
                         color: Colors.white,
                         fontSize: 15.0,
                         fontWeight: FontWeight.w500
                       )
                     ),
-                  )
+                  ) : new Text("")
                 ],
               ),
             ),

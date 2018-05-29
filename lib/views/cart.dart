@@ -79,7 +79,7 @@ class CartSideBarState extends State<CartSideBar> {
                             (globals.items[id]["variants"] as Map)[1]["amount"] = 1;
                           });
                           globals.cart.add(id);
-                          print(globals.cart);
+                          globals.server.simulateMessage(globals.cart.length.toString());
                         },
                         child: new Text("Add To Cart"),
                         color: Colors.blueAccent,
@@ -98,8 +98,6 @@ class CartSideBarState extends State<CartSideBar> {
                           (globals.items[id]["variants"] as Map)[1]["amount"] += 1;
                         }),
                         child: new Text("+", style: new TextStyle(fontSize: width * 0.07),),
-                        // icon: new Icon(Icons.add),
-                        // label: new Text(""),
                         color: Colors.blueAccent,
                         textColor: Colors.white,
                       ),
@@ -117,11 +115,10 @@ class CartSideBarState extends State<CartSideBar> {
                           });
                           if ((globals.items[id]["variants"] as Map)[1]["amount"] == 0) {
                             globals.cart.remove(id);
+                            globals.server.simulateMessage(globals.cart.length.toString());
                           }
                         },
                         child: new Text("-", style: new TextStyle(fontSize: width * 0.07),),
-                        // icon: new Icon(Icons.add),
-                        // label: new Text(""),
                         color: Colors.blueAccent,
                         textColor: Colors.white,
                       ),
@@ -147,6 +144,10 @@ class CartSideBarState extends State<CartSideBar> {
         price = price + (globals.items[id]["variants"] as Map)[1]["price"];
         sale = sale + (globals.items[id]["variants"] as Map)[1]["sale"];
       }
+      setState(() {
+        globals.price = price;
+        globals.sale = sale;
+      });
       var itemString = (globals.cart.length > 1) ? "(" + globals.cart.length.toString() + " items)" : 
         (globals.cart.length == 1) ? "(" + globals.cart.length.toString() + " item)" : "";
       return new Container(
@@ -162,7 +163,7 @@ class CartSideBarState extends State<CartSideBar> {
             new Divider(),
             new Expanded(
               child: (globals.cart.length == 0) ?
-                new Center(child: new Text("Nos items in your cart") ,):
+                new Center(child: new Text("No items in your cart") ,):
                 new ListView.builder(
                   shrinkWrap: true,
                   itemCount: globals.cart.length,
