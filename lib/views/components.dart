@@ -874,6 +874,114 @@ class SelectDeliveryTimePaymentState extends State<SelectDeliveryTimePayment> {
     }
 }
 
+class Login extends StatelessWidget {
+  @override
+    Widget build(BuildContext context) {
+
+      return new AlertDialog(
+        title: new Center(child: new Text('Log In '),),
+        content: new SingleChildScrollView(
+          child: new ListBody(
+            children: <Widget>[
+              new Row(
+                children: <Widget>[
+                  // new Icon(Icons.),
+                  new Expanded(
+                    child: new RaisedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        print("login with google");
+                      },
+                      child: new Text("Sign in with Google", style: new TextStyle(color: Colors.black),),
+                      color: Color.fromRGBO(255, 255, 255, 1.0),
+                      textColor: Colors.white,
+                    )
+                  )
+                ],
+              ),
+              new Padding(
+                padding: EdgeInsets.all(5.0),
+              ),
+              new Row(
+                children: <Widget>[
+                  // new Icon(Icons.),
+                  new Expanded(
+                    child: new RaisedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        print("login with google");
+                      },
+                      child: new Text("Sign in with Facebook"),
+                      color: Color.fromRGBO(48, 60, 136, 1.0),
+                      textColor: Colors.white,
+                    )
+                  )
+                ],
+              ),
+              new Padding(
+                padding: EdgeInsets.all(5.0),
+              ),
+              new Row(
+                children: <Widget>[
+                  // new Icon(Icons.),
+                  new Expanded(
+                    child: new RaisedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        print("login with google");
+                      },
+                      child: new Text("Sign in with Twitter"),
+                      color: Color.fromRGBO(47, 125, 231, 1.0),
+                      textColor: Colors.white,
+                    )
+                  )
+                ],
+              ),
+              new Padding(
+                padding: EdgeInsets.all(5.0),
+              ),
+              new Row(
+                children: <Widget>[
+                  // new Icon(Icons.),
+                  new Expanded(
+                    child: new RaisedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        print("login with google");
+                      },
+                      child: new Text("Sign in with phone"),
+                      color: Color.fromRGBO(0, 194, 152, 1.0),
+                      textColor: Colors.white,
+                    )
+                  )
+                ],
+              ),
+              new Padding(
+                padding: EdgeInsets.all(5.0),
+              ),
+              new Row(
+                children: <Widget>[
+                  // new Icon(Icons.),
+                  new Expanded(
+                    child: new RaisedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        print("login with google");
+                      },
+                      child: new Text("Sign in with email"),
+                      color: Color.fromRGBO(215, 0, 0, 1.0),
+                      textColor: Colors.white,
+                    )
+                  )
+                ],
+              )
+            ],
+          ),
+        )
+      );
+    }
+}
+
 Future<Null> dialog(BuildContext context, String select)  async {
 
   return showDialog<Null>(
@@ -895,6 +1003,8 @@ Future<Null> dialog(BuildContext context, String select)  async {
         return new Address();
       } else if (select == "add address"){
         return new AddAddress(null);
+      } else if (select == "login"){
+        return new Login();
       } else if (select == "edit address"){
         return new AddAddress(editAddress);
       } else if (select == "search select"){

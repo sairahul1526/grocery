@@ -3,6 +3,7 @@ import 'package:share/share.dart';
 import 'package:launch_review/launch_review.dart';
 
 import './components.dart';
+import './category_items.dart';
 
 import './globals.dart' as globals;
 
@@ -24,7 +25,11 @@ class SideBar extends StatelessWidget {
         ),
         new ListTile(
           title: new Text("Login"),
-          trailing: new Icon(Icons.arrow_right)
+          trailing: new Icon(Icons.arrow_right),
+          onTap: () {
+            Navigator.of(context).pop();
+            dialog(context, "login");
+          },
         ),
                 new ListTile(
           title: new Text("Address"),
@@ -66,14 +71,35 @@ class SideBar extends StatelessWidget {
       ];
 
       for (var cat in globals.categoriesList) {
+        var temp = <Widget>[];
+        
+        var keys = (cat[1] as Map).keys.toList();
+        for (var key in keys) {
+          temp.add(
+            new ListTile(
+              title: new Text(key),
+              trailing: new Icon(Icons.arrow_right),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                  context,
+                  new MaterialPageRoute(builder: (context) => 
+                    new CategoryItemsView(
+                      (cat[1] as Map).values.toList(),
+                      (cat[1] as Map).keys.toList(),
+                      keys.indexOf(key),
+                      cat[0]
+                    )
+                  ),
+                );
+              },
+            )
+          );
+        }
         sides.add(
           new ExpansionTile(
             title: new Text(cat[0], style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),),
-            children: (cat[1] as List).map((val) => new ListTile(
-                title: new Text(val),
-                trailing: new Icon(Icons.arrow_right),
-              ))
-            .toList(),
+            children: temp,
           )
         );
       }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import './views/side_bar.dart';
 import './views/cart.dart';
@@ -7,12 +8,18 @@ import './views/main_page.dart';
 import './views/globals.dart' as globals;
 import './views/search_view.dart';
 
-void main() => runApp(
-  new MaterialApp(
-    home: new RealWorldApp(),
-    debugShowCheckedModeBanner: false,
-  )
-);
+void main() { 
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.portraitUp,
+  ]);
+  runApp(
+    new MaterialApp(
+      home: new RealWorldApp(),
+      debugShowCheckedModeBanner: false,
+    )
+  );
+}
 
 class RealWorldApp extends StatefulWidget {
   @override
@@ -47,7 +54,7 @@ class RealWorldState extends State<RealWorldApp> {
           ),
           appBar: new AppBar(
             title: new Center(
-              child: new Text("GROCERY", style: new TextStyle(fontSize: 18.0),),
+              child: new Text("GROCERY ", style: new TextStyle(fontSize: 18.0),),
             ),
             actions: <Widget>[
               new IconButton(

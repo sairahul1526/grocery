@@ -39,6 +39,7 @@ class CategoryItemsViewState extends State<CategoryItemsView> with SingleTickerP
     void initState() {
       // TODO: implement initState
       super.initState();
+      numOfItems = globals.cart.length.toString();
       globals.server.messages.listen((no) {
         setState(() {
           numOfItems = no;

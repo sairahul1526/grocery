@@ -21,21 +21,21 @@ var addresses = [
 var categoriesList = [
   [
     "Fruits & Vegetables",
-    [
-      "All Fruits & Vegetables",
-      "Fresh Vegetables",
-      "Herbs & Seasoning",
-      "Fresh Fruits",
-      "Exotic Fruits & Veggies"
-    ]
+    {
+      "All Fruits & Vegetables": [1,2,3,4,5,6,7,8],
+      "Fresh Vegetables": [1,2,3],
+      "Herbs & Seasoning": [7,8],
+      "Fresh Fruits": [1,4,7,8],
+      "Exotic Fruits & Veggies": [8,7,3,1,2]
+    }
   ],
   [
     "Foodgrains, Oil & Masala",
-    [
-      "All Foodgrains, Oil & Masala",
-      "Atta, Flours & Sooji",
-      "Salt, Sugar & Jaggery"
-    ]
+    {
+      "All Foodgrains, Oil & Masala": [8,7,3,1,2],
+      "Atta, Flours & Sooji": [1,2,3,4,5,6,7,8],
+      "Salt, Sugar & Jaggery": [8,7,6,5,4,3,2,1]
+    }
   ]
 ];
 
